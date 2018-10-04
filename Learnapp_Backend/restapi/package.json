@@ -1,0 +1,30 @@
+{
+  "name": "lernapp-backend",
+  "version": "1.0.0",
+  "description": "A Node-JS Restfull API for the mobile application \"Lernapp\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RobertSchierz/Lernapp_backend.git"
+  },
+  "author": "Robert Schierz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RobertSchierz/Lernapp_backend/issues"
+  },
+  "homepage": "https://github.com/RobertSchierz/Lernapp_backend#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "mongodb": "^3.1.6",
+    "mongoose": "^5.2.14",
+    "morgan": "^1.9.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.4"
+  }
+}

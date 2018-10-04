@@ -7,3 +7,10 @@ sb.users.insert({"name":"test"})
 db.users.insert({"name":"test"})
 show dbs
 db
+svc -du ~/service/mongodb
+ps aux
+aux | grep mongod
+use admin
+db.createRole(    {      role: "mongostatRole",      privileges: [        { resource: { cluster: true }, actions: [ "serverStatus" ] }      ],      roles: []    } )
+use use users
+use users

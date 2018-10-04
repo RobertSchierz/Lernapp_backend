@@ -256,3 +256,150 @@ cd mongo-express/
 npm start
 cd mongo-express/
 npm start
+npm init
+cd mongo-express/
+npm stgart
+npm start
+clear
+cd ..
+cd restapi/
+npm init
+cd ..
+cd restapi/
+npm install --save express
+npm start
+cd
+cd mongodb/
+npm start
+cd mongodb/
+npm start
+cd ..
+cd restapi/
+node server.js
+nodemon start
+nodemon server.js
+npm start
+npm install
+npm start
+cd
+npm start
+cd mongo-express/
+npm start
+cd mongodb/
+mongo admin --port 31484 -u learnapp_mongoadmin -p
+aux | grep mongod
+grep mongod
+mongo admin --port 31484 -u learnapp_mongoadmin -p
+cd mongo-express/
+npm start
+cd restapi/
+npm start
+cd mongo-express/
+npm start
+cd mongo-express/
+npm start+
+npm start
+clerared
+clear
+cd mongo-express/
+npm start
+cd ..
+cd restapi/
+npm start
+netstat -tulpen | grep 63628
+npm start
+cd ..
+cd mongo-express/
+npm start
+cd ..
+cd restapi/
+npm start
+cd ..
+cd mongodb/
+npm start
+cd ..
+cd restapi/
+npm start
+cd ..
+´cd mongodb/
+cd mongodb/
+mongo admin --port 31484 -u learnapp_mongoadmin -p
+cd ..
+cd restapi/
+npm start
+clear
+npm start
+clear
+npm start
+clear
+npm start
+clear
+npm start
+clear
+npm start
+clear
+npm start
+clear
+npm start
+clear
+npm start
+cd mongodb/
+mongo admin --port 31484 -u learnapp_mongoadmin -p
+cd mongo-express/
+npm restart
+npm cache clean --force
+npm restart
+cd mongo-express/
+npm start
+npm stop
+npm stop server.js
+npm stop app.js
+clear
+npm stop
+npm start
+cd ..
+cd restapi/
+npm start
+npm stop
+npm restart
+npm cache clean --force
+npm restart
+clear
+npm restart
+npm start
+clear
+npm start
+clear
+npm start
+cd restapi/
+npm start
+clear
+npm start
+npm cache clean
+npm cache clean --force
+npm start
+ netstat -tulpen | grep 63628
+npm restart
+nodemon server.js
+cd mongo-express/
+npm start
+cd restapi/
+npm start
+node server.js
+npm start
+npm stop
+netstat -nptl
+clear
+npm start
+cd restapi/
+npm restart
+npm start
+node server.js
+rm -rf node_modules
+npm cache clean
+npm install
+npm start
+rm -rf node_modules
+npm cache clean --force
+npm install
+npm start

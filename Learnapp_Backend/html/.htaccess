@@ -1,4 +1,6 @@
 RewriteEngine On
+RewriteRule ^restapi/(.*) http://localhost:63629/$1 [P]
 RewriteRule (.*) http://localhost:64321/$1 [P]
+
 
 
