@@ -1,0 +1,123 @@
+@400000005ba3ae0f12cb840c 2018-09-20T16:26:13.315+0200 I CONTROL  [initandlisten] MongoDB starting : pid=1473 port=31484 dbpath=/home/learnapp/mongodb 64-bit host=enif.uberspace.de
+@400000005ba3ae0f12cd1e34 2018-09-20T16:26:13.315+0200 I CONTROL  [initandlisten] db version v3.6.3
+@400000005ba3ae0f12ce27d4 2018-09-20T16:26:13.315+0200 I CONTROL  [initandlisten] git version: 9586e557d54ef70f9ca4b43c26892cd55257e1a5
+@400000005ba3ae0f12cec414 2018-09-20T16:26:13.315+0200 I CONTROL  [initandlisten] OpenSSL version: OpenSSL 1.0.1e-fips 11 Feb 2013
+@400000005ba3ae0f12cfb25c 2018-09-20T16:26:13.315+0200 I CONTROL  [initandlisten] allocator: tcmalloc
+@400000005ba3ae0f12d042e4 2018-09-20T16:26:13.315+0200 I CONTROL  [initandlisten] modules: none
+@400000005ba3ae0f12d0bfe4 2018-09-20T16:26:13.315+0200 I CONTROL  [initandlisten] build environment:
+@400000005ba3ae0f12d140cc 2018-09-20T16:26:13.315+0200 I CONTROL  [initandlisten]     distmod: rhel62
+@400000005ba3ae0f12d1bdcc 2018-09-20T16:26:13.315+0200 I CONTROL  [initandlisten]     distarch: x86_64
+@400000005ba3ae0f12d23eb4 2018-09-20T16:26:13.315+0200 I CONTROL  [initandlisten]     target_arch: x86_64
+@400000005ba3ae0f12d32cfc 2018-09-20T16:26:13.315+0200 I CONTROL  [initandlisten] options: { net: { bindIp: "127.0.0.1", port: 31484 }, security: { authorization: "enabled" }, storage: { dbPath: "/home/learnapp/mongodb", mmapv1: { smallFiles: true }, wiredTiger: { engineConfig: { cacheSizeGB: 0.5 } } } }
+@400000005ba3ae0f1305a2f4 2018-09-20T16:26:13.319+0200 I STORAGE  [initandlisten] 
+@400000005ba3ae0f13064aec 2018-09-20T16:26:13.319+0200 I STORAGE  [initandlisten] ** WARNING: Using the XFS filesystem is strongly recommended with the WiredTiger storage engine
+@400000005ba3ae0f1306d78c 2018-09-20T16:26:13.319+0200 I STORAGE  [initandlisten] **          See http://dochub.mongodb.org/core/prodnotes-filesystem
+@400000005ba3ae0f130b639c 2018-09-20T16:26:13.319+0200 I STORAGE  [initandlisten] wiredtiger_open config: create,cache_size=512M,session_max=20000,eviction=(threads_min=4,threads_max=4),config_base=false,statistics=(fast),log=(enabled=true,archive=true,path=journal,compressor=snappy),file_manager=(close_idle_time=100000),statistics_log=(wait=0),verbose=(recovery_progress),
+@400000005ba3ae100d49543c 2018-09-20T16:26:14.222+0200 W STORAGE  [initandlisten] Detected configuration for non-active storage engine mmapv1 when current storage engine is wiredTiger
+@400000005ba3ae100d728334 2018-09-20T16:26:14.225+0200 I CONTROL  [initandlisten] 
+@400000005ba3ae100d7365c4 2018-09-20T16:26:14.225+0200 I CONTROL  [initandlisten] ** WARNING: /sys/kernel/mm/transparent_hugepage/enabled is 'always'.
+@400000005ba3ae100d73fa34 2018-09-20T16:26:14.225+0200 I CONTROL  [initandlisten] **        We suggest setting it to 'never'
+@400000005ba3ae100d751f2c 2018-09-20T16:26:14.225+0200 I CONTROL  [initandlisten] 
+@400000005ba3ae100d75b39c 2018-09-20T16:26:14.225+0200 I CONTROL  [initandlisten] ** WARNING: /sys/kernel/mm/transparent_hugepage/defrag is 'always'.
+@400000005ba3ae100d763c54 2018-09-20T16:26:14.225+0200 I CONTROL  [initandlisten] **        We suggest setting it to 'never'
+@400000005ba3ae100d770774 2018-09-20T16:26:14.225+0200 I CONTROL  [initandlisten] 
+@400000005ba3ae100d77d294 2018-09-20T16:26:14.225+0200 I CONTROL  [initandlisten] ** WARNING: soft rlimits too low. rlimits set to 300 processes, 1024 files. Number of processes should be at least 512 : 0.5 times number of files.
+@400000005ba3ae100d786ed4 2018-09-20T16:26:14.225+0200 I CONTROL  [initandlisten] 
+@400000005ba3ae100d92923c 2018-09-20T16:26:14.227+0200 I STORAGE  [initandlisten] createCollection: admin.system.version with provided UUID: d156c342-7753-447e-af8a-aef1f8562c70
+@400000005ba3ae100e782b94 2018-09-20T16:26:14.242+0200 I COMMAND  [initandlisten] setting featureCompatibilityVersion to 3.6
+@400000005ba3ae100ec8c464 2018-09-20T16:26:14.248+0200 I STORAGE  [initandlisten] createCollection: local.startup_log with generated UUID: 30e5fb45-7666-4c96-a913-eb8dc79173ab
+@400000005ba3ae100fc7c1bc 2018-09-20T16:26:14.264+0200 I FTDC     [initandlisten] Initializing full-time diagnostic data capture with directory '/home/learnapp/mongodb/diagnostic.data'
+@400000005ba3ae100fd8156c 2018-09-20T16:26:14.265+0200 I NETWORK  [initandlisten] waiting for connections on port 31484
+@400000005ba3ae101caeb854 2018-09-20T16:26:14.481+0200 I NETWORK  [listener] connection accepted from 127.0.0.1:38880 #1 (1 connection now open)
+@400000005ba3ae101cb2e6a4 2018-09-20T16:26:14.481+0200 I ACCESS   [conn1] note: no users configured in admin.system.users, allowing localhost access
+@400000005ba3ae101dda1124 2018-09-20T16:26:14.500+0200 I STORAGE  [conn1] createCollection: admin.system.users with generated UUID: ca06c656-ef1f-42ce-a829-299022bbcf18
+@400000005ba3ae101f52f19c 2018-09-20T16:26:14.525+0200 I NETWORK  [conn1] end connection 127.0.0.1:38880 (0 connections now open)
+@400000005ba3ae5419398ec4 2018-09-20T16:27:22.423+0200 I NETWORK  [listener] connection accepted from 127.0.0.1:40056 #2 (1 connection now open)
+@400000005ba3ae541941bc84 2018-09-20T16:27:22.423+0200 I NETWORK  [conn2] received client metadata from 127.0.0.1:40056 conn: { application: { name: "MongoDB Shell" }, driver: { name: "MongoDB Internal Client", version: "3.6.3" }, os: { type: "Linux", name: "CentOS release 6.10 (Final)", architecture: "x86_64", version: "Kernel 2.6.32-696.18.7.el6.x86_64" } }
+@400000005ba3ae541ae5d37c 2018-09-20T16:27:22.451+0200 I ACCESS   [conn2] Successfully authenticated as principal learnapp_mongoadmin on admin
+@400000005ba3af2e04dbfafc 2018-09-20T16:31:00.080+0200 I NETWORK  [conn2] end connection 127.0.0.1:40056 (0 connections now open)
+@400000005ba3af3c0c8de3dc 2018-09-20T16:31:14.210+0200 I NETWORK  [listener] connection accepted from 127.0.0.1:44966 #3 (1 connection now open)
+@400000005ba3af3c0c93d74c 2018-09-20T16:31:14.210+0200 I NETWORK  [conn3] received client metadata from 127.0.0.1:44966 conn: { application: { name: "MongoDB Shell" }, driver: { name: "MongoDB Internal Client", version: "3.6.3" }, os: { type: "Linux", name: "CentOS release 6.10 (Final)", architecture: "x86_64", version: "Kernel 2.6.32-696.18.7.el6.x86_64" } }
+@400000005ba3af3c0e1c7ed4 2018-09-20T16:31:14.236+0200 I ACCESS   [conn3] Successfully authenticated as principal learnapp_mongoadmin on admin
+@400000005ba3af3c0fe1643c 2018-09-20T16:31:14.266+0200 I STORAGE  [thread4] createCollection: config.system.sessions with generated UUID: 3d2a8d65-aa21-4c13-bd7f-bce658dac79b
+@400000005ba3af3c11620ce4 2018-09-20T16:31:14.291+0200 I INDEX    [thread4] build index on: config.system.sessions properties: { v: 2, key: { lastUse: 1 }, name: "lsidTTLIndex", ns: "config.system.sessions", expireAfterSeconds: 1800 }
+@400000005ba3af3c116358ec 2018-09-20T16:31:14.291+0200 I INDEX    [thread4] 	 building index using bulk method; build may temporarily use up to 500 megabytes of RAM
+@400000005ba3af3c11800c94 2018-09-20T16:31:14.293+0200 I INDEX    [thread4] build index done.  scanned 0 total records. 0 secs
+@400000005ba3c32a04c127cc 2018-09-20T17:56:16.078+0200 I NETWORK  [conn3] end connection 127.0.0.1:44966 (0 connections now open)
+@400000005ba3c3490906f76c 2018-09-20T17:56:47.151+0200 I NETWORK  [listener] connection accepted from 127.0.0.1:38310 #4 (1 connection now open)
+@400000005ba3c3490910daac 2018-09-20T17:56:47.152+0200 I NETWORK  [conn4] received client metadata from 127.0.0.1:38310 conn: { application: { name: "MongoDB Shell" }, driver: { name: "MongoDB Internal Client", version: "3.6.3" }, os: { type: "Linux", name: "CentOS release 6.10 (Final)", architecture: "x86_64", version: "Kernel 2.6.32-696.18.7.el6.x86_64" } }
+@400000005ba3c3490aa0bdc4 2018-09-20T17:56:47.178+0200 I ACCESS   [conn4] Successfully authenticated as principal learnapp_mongoadmin on admin
+@400000005ba3c92f1ab0736c 2018-09-20T18:21:57.447+0200 I STORAGE  [conn4] createCollection: users.users with generated UUID: 1cffbd84-c617-4ac9-bb76-fc2de65ed1c2
+@400000005ba3cff01ed7f53c 2018-09-20T18:50:46.517+0200 I NETWORK  [listener] connection accepted from 127.0.0.1:57136 #5 (2 connections now open)
+@400000005ba3cff020ac8274 2018-09-20T18:50:46.548+0200 I NETWORK  [conn5] received client metadata from 127.0.0.1:57136 conn: { driver: { name: "nodejs", version: "2.2.24" }, os: { type: "Linux", name: "linux", architecture: "x64", version: "2.6.32-696.18.7.el6.x86_64" }, platform: "Node.js v8.12.0, LE, mongodb-core: 2.1.8" }
+@400000005ba3cff0226c4374 2018-09-20T18:50:46.577+0200 I ACCESS   [conn5] Unauthorized: not authorized on local to execute command { listCollections: true, filter: {}, cursor: {}, $db: "local" }
+@400000005ba3d04b07de3e7c 2018-09-20T18:52:17.131+0200 I ACCESS   [conn5] Unauthorized: not authorized on local to execute command { listCollections: true, filter: {}, cursor: {}, $db: "local" }
+@400000005ba3d051015fd074 2018-09-20T18:52:23.022+0200 I ACCESS   [conn5] Unauthorized: not authorized on local to execute command { listCollections: true, filter: {}, cursor: {}, $db: "local" }
+@400000005ba3d0c624a660ac 2018-09-20T18:54:20.614+0200 I NETWORK  [conn5] end connection 127.0.0.1:57136 (1 connection now open)
+@400000005ba3d0c83a021edc 2018-09-20T18:54:22.973+0200 I NETWORK  [listener] connection accepted from 127.0.0.1:34114 #6 (2 connections now open)
+@400000005ba3d0c900222c0c 2018-09-20T18:54:22.999+0200 I NETWORK  [conn6] received client metadata from 127.0.0.1:34114 conn: { driver: { name: "nodejs", version: "2.2.24" }, os: { type: "Linux", name: "linux", architecture: "x64", version: "2.6.32-696.18.7.el6.x86_64" }, platform: "Node.js v8.12.0, LE, mongodb-core: 2.1.8" }
+@400000005ba3d0c9014a8b24 2018-09-20T18:54:23.021+0200 I ACCESS   [conn6] Unauthorized: not authorized on local to execute command { listCollections: true, filter: {}, cursor: {}, $db: "local" }
+@400000005ba3d1a9337ea3dc 2018-09-20T18:58:07.863+0200 I ACCESS   [conn6] Unauthorized: not authorized on test to execute command { listCollections: true, filter: { name: "delete_me" }, cursor: {}, $db: "test" }
+@400000005ba3d1bb01d638f4 2018-09-20T18:58:25.030+0200 I ACCESS   [conn6] Unauthorized: not authorized on local to execute command { dropDatabase: 1, $db: "local" }
+@400000005ba3d1c40b800204 2018-09-20T18:58:34.192+0200 I ACCESS   [conn6] Unauthorized: not authorized on local to execute command { listCollections: true, filter: {}, cursor: {}, $db: "local" }
+@400000005ba3d1e500b52124 2018-09-20T18:59:07.011+0200 I NETWORK  [conn6] end connection 127.0.0.1:34114 (1 connection now open)
+@400000005ba3d1e638028a04 2018-09-20T18:59:08.939+0200 I NETWORK  [listener] connection accepted from 127.0.0.1:40570 #7 (2 connections now open)
+@400000005ba3d1e639a18464 2018-09-20T18:59:08.966+0200 I NETWORK  [conn7] received client metadata from 127.0.0.1:40570 conn: { driver: { name: "nodejs", version: "2.2.24" }, os: { type: "Linux", name: "linux", architecture: "x64", version: "2.6.32-696.18.7.el6.x86_64" }, platform: "Node.js v8.12.0, LE, mongodb-core: 2.1.8" }
+@400000005ba3d1e63a64f78c 2018-09-20T18:59:08.979+0200 I ACCESS   [conn7] Unauthorized: not authorized on local to execute command { listCollections: true, filter: {}, cursor: {}, $db: "local" }
+@400000005ba3d27c100bd384 2018-09-20T19:01:38.268+0200 I NETWORK  [conn7] end connection 127.0.0.1:40570 (1 connection now open)
+@400000005ba3d27e1c6f1b2c 2018-09-20T19:01:40.476+0200 I NETWORK  [listener] connection accepted from 127.0.0.1:43722 #8 (2 connections now open)
+@400000005ba3d27e1dfd2d6c 2018-09-20T19:01:40.503+0200 I NETWORK  [conn8] received client metadata from 127.0.0.1:43722 conn: { driver: { name: "nodejs", version: "2.2.24" }, os: { type: "Linux", name: "linux", architecture: "x64", version: "2.6.32-696.18.7.el6.x86_64" }, platform: "Node.js v8.12.0, LE, mongodb-core: 2.1.8" }
+@400000005ba3d27e1eb58ca4 2018-09-20T19:01:40.515+0200 I ACCESS   [conn8] Unauthorized: not authorized on local to execute command { listCollections: true, filter: {}, cursor: {}, $db: "local" }
+@400000005ba3d2ba0fae1f3c 2018-09-20T19:02:40.262+0200 I NETWORK  [conn8] end connection 127.0.0.1:43722 (1 connection now open)
+@400000005ba3d2bc19770cf4 2018-09-20T19:02:42.426+0200 I NETWORK  [listener] connection accepted from 127.0.0.1:44632 #9 (2 connections now open)
+@400000005ba3d2bc1ad32a24 2018-09-20T19:02:42.449+0200 I NETWORK  [conn9] received client metadata from 127.0.0.1:44632 conn: { driver: { name: "nodejs", version: "2.2.24" }, os: { type: "Linux", name: "linux", architecture: "x64", version: "2.6.32-696.18.7.el6.x86_64" }, platform: "Node.js v8.12.0, LE, mongodb-core: 2.1.8" }
+@400000005ba3d2bc251bea84 2018-09-20T19:02:42.622+0200 I ACCESS   [conn9] Successfully authenticated as principal learnapp_mongoadmin on admin
+@400000005ba3d2bc25719fec 2018-09-20T19:02:42.628+0200 I NETWORK  [listener] connection accepted from 127.0.0.1:44644 #10 (3 connections now open)
+@400000005ba3d2bc2d4512bc 2018-09-20T19:02:42.759+0200 I ACCESS   [conn10] Successfully authenticated as principal learnapp_mongoadmin on admin
+@400000005ba3d2bc2da21f0c 2018-09-20T19:02:42.765+0200 I NETWORK  [listener] connection accepted from 127.0.0.1:44648 #11 (4 connections now open)
+@400000005ba3d2bc32eec3d4 2018-09-20T19:02:42.854+0200 I ACCESS   [conn11] Successfully authenticated as principal learnapp_mongoadmin on admin
+@400000005ba3d2c206144c1c 2018-09-20T19:02:48.101+0200 I NETWORK  [listener] connection accepted from 127.0.0.1:44676 #12 (5 connections now open)
+@400000005ba3d2c20b6c5eac 2018-09-20T19:02:48.191+0200 I ACCESS   [conn12] Successfully authenticated as principal learnapp_mongoadmin on admin
+@400000005ba3f0dd0cf86d4c 2018-09-20T21:11:15.216+0200 I NETWORK  [conn4] end connection 127.0.0.1:38310 (4 connections now open)
+@400000005ba3f1ac10fda1dc 2018-09-20T21:14:42.284+0200 I NETWORK  [conn9] end connection 127.0.0.1:44632 (1 connection now open)
+@400000005ba3f1ac10fdb17c 2018-09-20T21:14:42.284+0200 I NETWORK  [conn11] end connection 127.0.0.1:44648 (2 connections now open)
+@400000005ba3f1ac110352e4 2018-09-20T21:14:42.284+0200 I NETWORK  [conn10] end connection 127.0.0.1:44644 (3 connections now open)
+@400000005ba3f1ac131e2464 2018-09-20T21:14:42.320+0200 I NETWORK  [conn12] end connection 127.0.0.1:44676 (0 connections now open)
+@400000005ba524771906ab6c 2018-09-21T19:03:41.413+0200 I NETWORK  [listener] connection accepted from 127.0.0.1:33912 #13 (1 connection now open)
+@400000005ba5247719be85d4 2018-09-21T19:03:41.431+0200 I NETWORK  [conn13] received client metadata from 127.0.0.1:33912 conn: { driver: { name: "nodejs", version: "2.2.24" }, os: { type: "Linux", name: "linux", architecture: "x64", version: "2.6.32-696.18.7.el6.x86_64" }, platform: "Node.js v8.12.0, LE, mongodb-core: 2.1.8" }
+@400000005ba524772b4f70c4 2018-09-21T19:03:41.726+0200 I ACCESS   [conn13] Successfully authenticated as principal learnapp_mongoadmin on admin
+@400000005ba524772baf401c 2018-09-21T19:03:41.732+0200 I NETWORK  [listener] connection accepted from 127.0.0.1:33916 #14 (2 connections now open)
+@400000005ba5247733e7605c 2018-09-21T19:03:41.870+0200 I ACCESS   [conn14] Successfully authenticated as principal learnapp_mongoadmin on admin
+@400000005ba52477363196ac 2018-09-21T19:03:41.909+0200 I NETWORK  [listener] connection accepted from 127.0.0.1:33920 #15 (3 connections now open)
+@400000005ba524780184cd34 2018-09-21T19:03:42.025+0200 I ACCESS   [conn15] Successfully authenticated as principal learnapp_mongoadmin on admin
+@400000005ba524a4208fc6fc 2018-09-21T19:04:26.546+0200 I NETWORK  [listener] connection accepted from 127.0.0.1:36254 #16 (4 connections now open)
+@400000005ba524a4293b03fc 2018-09-21T19:04:26.691+0200 I ACCESS   [conn16] Successfully authenticated as principal learnapp_mongoadmin on admin
+@400000005ba524b3097735cc 2018-09-21T19:04:41.158+0200 I NETWORK  [conn13] end connection 127.0.0.1:33912 (3 connections now open)
+@400000005ba524b3097c852c 2018-09-21T19:04:41.159+0200 I NETWORK  [conn14] end connection 127.0.0.1:33916 (2 connections now open)
+@400000005ba524b3097d86fc 2018-09-21T19:04:41.159+0200 I NETWORK  [conn15] end connection 127.0.0.1:33920 (1 connection now open)
+@400000005ba524b309825d44 2018-09-21T19:04:41.159+0200 I NETWORK  [conn16] end connection 127.0.0.1:36254 (0 connections now open)
+@400000005ba52546251acd5c 2018-09-21T19:07:08.622+0200 I NETWORK  [listener] connection accepted from 127.0.0.1:44570 #17 (1 connection now open)
+@400000005ba525462689882c 2018-09-21T19:07:08.646+0200 I NETWORK  [conn17] received client metadata from 127.0.0.1:44570 conn: { driver: { name: "nodejs", version: "2.2.24" }, os: { type: "Linux", name: "linux", architecture: "x64", version: "2.6.32-696.18.7.el6.x86_64" }, platform: "Node.js v8.12.0, LE, mongodb-core: 2.1.8" }
+@400000005ba5254630c75f94 2018-09-21T19:07:08.818+0200 I ACCESS   [conn17] Successfully authenticated as principal learnapp_mongoadmin on admin
+@400000005ba5254631266b9c 2018-09-21T19:07:08.824+0200 I NETWORK  [listener] connection accepted from 127.0.0.1:44582 #18 (2 connections now open)
+@400000005ba5254638dc1184 2018-09-21T19:07:08.953+0200 I ACCESS   [conn18] Successfully authenticated as principal learnapp_mongoadmin on admin
+@400000005ba52546394e5384 2018-09-21T19:07:08.961+0200 I NETWORK  [listener] connection accepted from 127.0.0.1:44594 #19 (3 connections now open)
+@400000005ba525470675b1b4 2018-09-21T19:07:09.108+0200 I ACCESS   [conn19] Successfully authenticated as principal learnapp_mongoadmin on admin
+@400000005ba5255c041ff62c 2018-09-21T19:07:30.068+0200 I NETWORK  [conn17] end connection 127.0.0.1:44570 (2 connections now open)
+@400000005ba5255c042368fc 2018-09-21T19:07:30.069+0200 I NETWORK  [conn18] end connection 127.0.0.1:44582 (1 connection now open)
+@400000005ba5255c042637bc 2018-09-21T19:07:30.069+0200 I NETWORK  [conn19] end connection 127.0.0.1:44594 (0 connections now open)
+@400000005bb34aea232a191c 2018-10-02T12:39:28.587+0200 I NETWORK  [listener] connection accepted from 127.0.0.1:53268 #20 (1 connection now open)
+@400000005bb34aea2448fa84 2018-10-02T12:39:28.605+0200 I NETWORK  [conn20] received client metadata from 127.0.0.1:53268 conn: { driver: { name: "nodejs", version: "2.2.24" }, os: { type: "Linux", name: "linux", architecture: "x64", version: "2.6.32-696.18.7.el6.x86_64" }, platform: "Node.js v8.12.0, LE, mongodb-core: 2.1.8" }
+@400000005bb34aea35d21d44 2018-10-02T12:39:28.902+0200 I COMMAND  [conn20] command admin.system.users command: saslStart { saslStart: 1, mechanism: "SCRAM-SHA-1", payload: "xxx", autoAuthorize: 1, $db: "admin" } numYields:0 reslen:179 locks:{ Global: { acquireCount: { r: 2 } }, Database: { acquireCount: { r: 1 } }, Collection: { acquireCount: { r: 1 } } } protocol:op_query 138ms
+@400000005bb34aeb099773b4 2018-10-02T12:39:29.160+0200 I ACCESS   [conn20] Successfully authenticated as principal learnapp_mongoadmin on admin
+@400000005bb34aeb09f5108c 2018-10-02T12:39:29.166+0200 I NETWORK  [listener] connection accepted from 127.0.0.1:53276 #21 (2 connections now open)
+@400000005bb34aeb1108d8f4 2018-10-02T12:39:29.285+0200 I ACCESS   [conn21] Successfully authenticated as principal learnapp_mongoadmin on admin
+@400000005bb34aeb114495ec 2018-10-02T12:39:29.289+0200 I COMMAND  [conn20] command local.$cmd command: listCollections { listCollections: true, filter: {}, cursor: {}, $db: "local" } numYields:0 reslen:328 locks:{ Global: { acquireCount: { r: 2 } }, Database: { acquireCount: { R: 1 } } } protocol:op_query 115ms
+@400000005bb34aeb13f0f90c 2018-10-02T12:39:29.334+0200 I NETWORK  [listener] connection accepted from 127.0.0.1:53278 #22 (3 connections now open)
+@400000005bb34aeb1c7d6754 2018-10-02T12:39:29.477+0200 I ACCESS   [conn22] Successfully authenticated as principal learnapp_mongoadmin on admin
+@400000005bb34b87360b6d24 2018-10-02T12:42:05.906+0200 I NETWORK  [listener] connection accepted from 127.0.0.1:56618 #23 (4 connections now open)
+@400000005bb34b8801d63cdc 2018-10-02T12:42:06.030+0200 I ACCESS   [conn23] Successfully authenticated as principal learnapp_mongoadmin on admin
+@400000005bb34bc80a8997fc 2018-10-02T12:43:10.176+0200 I NETWORK  [conn23] end connection 127.0.0.1:56618 (3 connections now open)
+@400000005bb34bc80a89a3b4 2018-10-02T12:43:10.176+0200 I NETWORK  [conn22] end connection 127.0.0.1:53278 (2 connections now open)
+@400000005bb34bc80ad60a4c 2018-10-02T12:43:10.181+0200 I NETWORK  [conn21] end connection 127.0.0.1:53276 (1 connection now open)
+@400000005bb34bc80ae730ec 2018-10-02T12:43:10.181+0200 I NETWORK  [conn20] end connection 127.0.0.1:53268 (0 connections now open)

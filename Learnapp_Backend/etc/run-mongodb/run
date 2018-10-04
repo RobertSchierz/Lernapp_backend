@@ -1,0 +1,2 @@
+#!/bin/sh
+exec /package/host/localhost/mongodb-3.6/bin/mongod --dbpath ~/mongodb --bind_ip 127.0.0.1 --port 31484 --auth --smallfiles --wiredTigerCacheSizeGB=0.5 2>&1

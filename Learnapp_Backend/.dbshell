@@ -1,0 +1,9 @@
+show dbs
+show dbs
+use users
+show dbs
+db
+sb.users.insert({"name":"test"})
+db.users.insert({"name":"test"})
+show dbs
+db

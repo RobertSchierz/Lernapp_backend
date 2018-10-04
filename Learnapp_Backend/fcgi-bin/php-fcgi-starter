@@ -1,0 +1,8 @@
+#!/bin/sh
+## 2018-09-18 /usr/local/sbin/uberspace-account-create.sh
+. ~/etc/phpversion
+export PHPRC="/home/learnapp/etc"
+export USER="learnapp"
+export HOME="/home/learnapp"
+export TMPDIR="/home/learnapp/tmp"
+exec /package/host/localhost/php-${PHPVERSION}/bin/php-cgi

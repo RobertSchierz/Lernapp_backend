@@ -1,0 +1,2 @@
+RewriteEngine on
+RewriteRule ^mongui/(.*) http://localhost:64321/$1 [P]

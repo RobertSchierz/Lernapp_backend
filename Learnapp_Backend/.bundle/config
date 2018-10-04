@@ -1,0 +1,6 @@
+---
+BUNDLE_PATH: vendor/bundle
+BUNDLE_BUILD__SQLITE3: "--with-sqlite3-include=/package/host/localhost/sqlite-3/include --with-sqlite3-lib=/package/host/localhost/sqlite-3/lib"
+BUNDLE_BUILD__PG: "--with-pg-config=/package/host/localhost/postgresql-9.3.2-1/bin/pg_config"
+BUNDLE_BUILD__PATRON: "--with-curl-dir=/package/host/localhost/curl"
+BUNDLE_BUILD__CHARLOCK_HOLMES: "--with-icu-dir=/package/host/localhost/icu4c"

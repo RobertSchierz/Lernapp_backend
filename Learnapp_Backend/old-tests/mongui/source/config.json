@@ -1,0 +1,11 @@
+{
+  "database": {
+    "default": {
+      "host": "localhost",
+      "port": 31484,
+      "name": "users",
+      "username": "learnapp_mongoadmin",
+      "password": "Xahy4ozuje"
+    }
+  }
+}

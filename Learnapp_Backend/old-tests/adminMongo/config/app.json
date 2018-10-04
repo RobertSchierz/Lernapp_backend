@@ -1,0 +1,12 @@
+{"app":{
+    "host": "localhost",
+        "port": 64321,
+        "password": "secureadminpassword",
+        "locale": "de",
+        "context": "dbApp",
+        "monitoring": true
+}
+
+
+
+}

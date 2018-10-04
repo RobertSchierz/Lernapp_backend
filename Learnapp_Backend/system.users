@@ -1,0 +1,1 @@
+{"_id":"admin.learnapp_mongoadmin","user":"learnapp_mongoadmin","db":"admin","credentials":{"SCRAM-SHA-1":{"iterationCount":10000,"salt":"k7PAO5N9W41A+QRaVRl7hw==","storedKey":"FghslWbr+3FWMqWN1yMvcikrPR8=","serverKey":"oGFdlsrgs05ez9m4RBgXFJic3fQ="}},"roles":[{"role":"root","db":"admin"}]}
