@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const custom_env = require('./nodemon.json');
 
 const userRoutes = require('./api/routes/users');
+const groupRoutes = require('./api/routes/groups');
 
 
 
@@ -43,6 +44,7 @@ app.use((req, res, next) => {
 
 //Routes 
 app.use('/users', userRoutes);
+app.use('/groups', groupRoutes);
 
 app.use((req, res, next) => {
 
@@ -60,5 +62,6 @@ app.use((error, req, res, next) => {
         }
     })
 });
+ 
 
 module.exports = app;

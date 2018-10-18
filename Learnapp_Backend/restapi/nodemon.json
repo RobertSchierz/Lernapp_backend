@@ -3,6 +3,6 @@
         "USERNAME": "client",
         "PASSWORD": "learnapp",
         "PORT": "31484",
-        "DB": "users"
+        "DB": "learnapp"
     }
 }
