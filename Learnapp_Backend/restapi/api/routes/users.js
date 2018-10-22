@@ -7,7 +7,7 @@ const User = require('../models/user');
 
 router.get('/', (req, res, next) => {
     User.find()
-        .select('name phonenumber _id')
+        .select('name phonenumber _id uniqueclientid')
         .exec()
         .then(docs => {
             const response = {
@@ -18,6 +18,7 @@ router.get('/', (req, res, next) => {
                     return {
                         name: doc.name,
                         phonenumber: doc.phonenumber,
+                        uniqueclientid: doc.uniqueclientid,
                         _id: doc._id,
                         requests: {
                             message: 'The possible Request to get the specific user: ' + doc.name,
@@ -42,7 +43,8 @@ router.post('/', (req, res, next) => {
     const _user = new User({
         _id: new mongoose.Types.ObjectId(),
         name: req.body.name,
-        phonenumber: req.body.phonenumber
+        phonenumber: req.body.phonenumber,
+        uniqueclientid: req.body.uniqueclientid
     });
 
     _user.save().then(result => {
@@ -52,6 +54,7 @@ router.post('/', (req, res, next) => {
             createdUser: {
                 name: result.name,
                 phonenumber: result.phonenumber,
+                uniqueclientid: result.uniqueclientid,
                 _id: result._id,
                 request: {
                     type: 'POST',
@@ -71,7 +74,7 @@ router.get('/:userId', (req, res, next) => {
 
     const id = req.params.userId;
     User.findById(id)
-        .select('name phonenumber _id')
+        .select('name phonenumber _id uniqueclientid')
         .exec()
         .then(doc => {
             console.log("From database", doc);

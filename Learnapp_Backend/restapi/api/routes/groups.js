@@ -5,10 +5,50 @@ const mongoose = require('mongoose');
 const Group = require('../models/group');
 const User = require('../models/user');
 
+
+// Get all Groups where usere is creator
+router.get('/usergroups/:userId', (req, res, next) => {
+    Group.find()
+        .select('_id name creator members')
+        .populate('creator members.member')
+        .exec()
+        .then(docs => {
+            const sortedGroups = [];
+            for (var i = 0; i < docs.length; i++) {
+                if (req.params.userId == docs[i].creator._id) {
+                    sortedGroups.push(docs[i]);
+                }
+            }
+            
+            if (sortedGroups != null) {
+                res.status(200).json({
+                    count: sortedGroups.length,
+                    groups: sortedGroups
+                    
+
+                });
+            }else{
+                return res.status(404).json({
+                    message: 'User has no groups as creator'
+                }); 
+            }
+
+
+
+        }).catch(err => {
+            res.status(500).json({
+                error: err
+            });
+        })
+
+
+});
+
+
 router.get('/', (req, res, next) => {
     Group.find()
         .select('_id name creator members')
-        //.populate('creator')
+        .populate('creator members.member')
         .exec()
         .then(docs => {
             res.status(200).json({
@@ -85,6 +125,8 @@ router.post("/", (req, res, next) => {
 
 router.get('/:groupId', (req, res, next) => {
     Group.findById(req.params.groupId)
+        .select('_id name creator members')
+        .populate('creator members.member')
         .exec()
         .then(group => {
             if (!group) {
@@ -214,35 +256,33 @@ router.patch('/:groupId', (req, res, next) => {
                                 if (group.members[i].member == searchedMemberId) {
                                     checkMemberExists = true;
                                 }
-                            }  
+                            }
 
-                            if(!checkMemberExists){
-                               
+                            if (!checkMemberExists) {
+
                                 Group.updateOne({
-                                    _id: req.params.groupId
-                                }, {
-                                    $push: {
-                                        members: 
-                                            {
+                                        _id: req.params.groupId
+                                    }, {
+                                        $push: {
+                                            members: {
                                                 "role": "Member",
                                                 "member": searchedMemberId
                                             }
                                         }
-                                    }
-                                ).exec().then(result => {
-                                    console.log(result);
-                                    res.status(200).json({
-                                        message: 'Groupmember added: ' + searchedMemberId,
-                                    });
-                                })
-                                .catch(err => {
-                                    console.log(err);
-                                    res.status(500).json({
-                                        error: err
+                                    }).exec().then(result => {
+                                        console.log(result);
+                                        res.status(200).json({
+                                            message: 'Groupmember added: ' + searchedMemberId,
+                                        });
                                     })
-                                });;  
+                                    .catch(err => {
+                                        console.log(err);
+                                        res.status(500).json({
+                                            error: err
+                                        })
+                                    });;
 
-                            }else{
+                            } else {
                                 return res.status(406).json({
                                     message: "Groupmember allready in Group!: " + searchedMemberId
                                 });
