@@ -19,18 +19,18 @@ router.get('/usergroups/:userId', (req, res, next) => {
                     sortedGroups.push(docs[i]);
                 }
             }
-            
+
             if (sortedGroups != null) {
                 res.status(200).json({
                     count: sortedGroups.length,
                     groups: sortedGroups
-                    
+
 
                 });
-            }else{
+            } else {
                 return res.status(404).json({
                     message: 'User has no groups as creator'
-                }); 
+                });
             }
 
 
@@ -43,6 +43,51 @@ router.get('/usergroups/:userId', (req, res, next) => {
 
 
 });
+
+// Get all Groups where usere is creator
+router.get('/usergroupsall/:userId', (req, res, next) => {
+    Group.find()
+        .select('_id name creator members')
+        .populate('creator members.member')
+        .exec()
+        .then(docs => {
+            const sortedGroups = [];
+            for (var i = 0; i < docs.length; i++) {
+                if (req.params.userId == docs[i].creator._id) {
+                    sortedGroups.push(docs[i]);
+                } else {
+                    for (var j = 0; j < docs[i].members.length; j++) {
+                        if (req.params.userId == docs[i].members[j].member._id) {
+                            sortedGroups.push(docs[i]);
+                        }
+                    }
+                }
+            }
+
+            if (sortedGroups != null) {
+                res.status(200).json({
+                    count: sortedGroups.length,
+                    groups: sortedGroups
+
+
+                });
+            } else {
+                return res.status(404).json({
+                    message: 'User has no groups as creator nor member'
+                });
+            }
+
+
+
+        }).catch(err => {
+            res.status(500).json({
+                error: err
+            });
+        })
+
+
+});
+
 
 
 router.get('/', (req, res, next) => {
@@ -76,8 +121,8 @@ router.get('/', (req, res, next) => {
 });
 
 router.post("/", (req, res, next) => {
-
     User.findById(req.body.creator)
+        .populate('creator members.member')
         .then(user => {
             if (!user) {
                 return res.status(404).json({
@@ -93,29 +138,38 @@ router.post("/", (req, res, next) => {
                 members: req.body.members
             });
 
-            return group.save();
 
-        })
-        .then(result => {
-            console.log(result);
-            res.status(201).json({
-                message: 'Group created',
-                createdGroups: {
-                    _id: result._id,
-                    creator: result.creator,
-                    name: result.name,
-                    members: result.members
-                },
-                request: {
-                    type: 'GET',
-                    url: 'http://learnapp.enif.uberspace.de/restapi/groups/' + result._id
-                }
+            group.save(function(err, group){
+                group
+                .populate('creator')
+                .populate('members.member')
+                .execPopulate()
+                .then(function(result){
+                    console.log(result);
+                    res.status(201).json({
+                        message: 'Group created',
+                        createdGroups: {
+                            _id: result._id,
+                            creator: result.creator,
+                            name: result.name,
+                            members: result.members
+                        },
+                        request: {
+                            type: 'GET',
+                            url: 'http://learnapp.enif.uberspace.de/restapi/groups/' + result._id
+                        }
+                    });
+                })
+
+
             });
+
         })
         .catch(err => {
             console.log(err);
             res.status(500).json({
-                error: err
+                error: err,
+                message: "Createerror"
             })
         });
 
