@@ -139,27 +139,27 @@ router.post("/", (req, res, next) => {
             });
 
 
-            group.save(function(err, group){
+            group.save(function (err, group) {
                 group
-                .populate('creator')
-                .populate('members.member')
-                .execPopulate()
-                .then(function(result){
-                    console.log(result);
-                    res.status(201).json({
-                        message: 'Group created',
-                        createdGroups: {
-                            _id: result._id,
-                            creator: result.creator,
-                            name: result.name,
-                            members: result.members
-                        },
-                        request: {
-                            type: 'GET',
-                            url: 'http://learnapp.enif.uberspace.de/restapi/groups/' + result._id
-                        }
-                    });
-                })
+                    .populate('creator')
+                    .populate('members.member')
+                    .execPopulate()
+                    .then(function (result) {
+                        console.log(result);
+                        res.status(201).json({
+                            message: 'Group created',
+                            createdGroups: {
+                                _id: result._id,
+                                creator: result.creator,
+                                name: result.name,
+                                members: result.members
+                            },
+                            request: {
+                                type: 'GET',
+                                url: 'http://learnapp.enif.uberspace.de/restapi/groups/' + result._id
+                            }
+                        });
+                    })
 
 
             });
@@ -189,11 +189,7 @@ router.get('/:groupId', (req, res, next) => {
                 });
             }
             res.status(200).json({
-                group: group,
-                request: {
-                    type: "GET",
-                    url: "http://learnapp.enif.uberspace.de/restapi/groups"
-                }
+                group: group
             })
         })
         .catch(err => {
@@ -215,17 +211,7 @@ router.delete('/:groupId', (req, res, next) => {
         .exec()
         .then(result => {
             res.status(200).json({
-                message: 'Group deleted',
-                request: {
-                    message: 'The possible Request to POST new Group:',
-                    type: 'POST',
-                    url: 'http://learnapp.enif.uberspace.de/restapi/groups/',
-                    body: {
-                        groupId: 'ID',
-                        name: 'String',
-                        members: '[{Members}]'
-                    }
-                }
+                message: 'Group deleted'
             });
         })
         .catch(err => {
@@ -324,10 +310,37 @@ router.patch('/:groupId', (req, res, next) => {
                                             }
                                         }
                                     }).exec().then(result => {
-                                        console.log(result);
-                                        res.status(200).json({
-                                            message: 'Groupmember added: ' + searchedMemberId,
-                                        });
+
+                                        Group.findById(req.params.groupId)
+                                            .exec()
+                                            .then(group => {
+
+                                                group
+                                                    .populate('creator')
+                                                    .populate('members.member')
+                                                    .execPopulate()
+                                                    .then(function (result) {
+
+                                                        var addeduser = null;
+                                                        for (var i = 0; i < result.members.length; i++) {
+                                                            if (result.members[i].member._id == searchedMemberId) {
+                                                                addeduser = result.members[i];
+                                                            }
+                                                        }
+                                                        if (addeduser != null) {
+                                                            res.status(200).json({
+                                                                message: 'Groupmember added: ' + searchedMemberId,
+                                                                member: addeduser
+
+                                                            });
+                                                        }else{
+                                                            res.status(404).json({
+                                                                error: err,
+                                                                message: "Memberinfos beim hinzufügen Fehler"
+                                                            })
+                                                        }
+                                                    })
+                                            })
                                     })
                                     .catch(err => {
                                         console.log(err);
@@ -337,12 +350,11 @@ router.patch('/:groupId', (req, res, next) => {
                                     });;
 
                             } else {
+
                                 return res.status(406).json({
                                     message: "Groupmember allready in Group!: " + searchedMemberId
                                 });
                             }
-
-
 
                         })
                         .catch(err => {
