@@ -10,7 +10,20 @@ const groupSchema = mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User'
         }       
-    }] 
+    }],
+    grouplink: {
+        type: String,
+        default: function(){
+            var link = "learngroup_";
+            var linklength = 20;
+            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+          
+            for (var i = 0; i < linklength; i++)
+            link += chars.charAt(Math.floor(Math.random() * chars.length));
+          
+            return link;
+        }
+    } 
     
 });
 

@@ -9,7 +9,7 @@ const User = require('../models/user');
 // Get all Groups where usere is creator
 router.get('/usergroups/:userId', (req, res, next) => {
     Group.find()
-        .select('_id name creator members')
+        .select('_id name creator members grouplink')
         .populate('creator members.member')
         .exec()
         .then(docs => {
@@ -47,7 +47,7 @@ router.get('/usergroups/:userId', (req, res, next) => {
 // Get all Groups where usere is creator
 router.get('/usergroupsall/:userId', (req, res, next) => {
     Group.find()
-        .select('_id name creator members')
+        .select('_id name creator members grouplink')
         .populate('creator members.member')
         .exec()
         .then(docs => {
@@ -92,7 +92,7 @@ router.get('/usergroupsall/:userId', (req, res, next) => {
 
 router.get('/', (req, res, next) => {
     Group.find()
-        .select('_id name creator members')
+        .select('_id name creator members grouplink')
         .populate('creator members.member')
         .exec()
         .then(docs => {
@@ -104,6 +104,7 @@ router.get('/', (req, res, next) => {
                         creator: doc.creator,
                         name: doc.name,
                         members: doc.members,
+                        grouplink: grouplink,
                         request: {
                             type: 'GET',
                             url: 'http://learnapp.enif.uberspace.de/restapi/groups/' + doc._id
@@ -179,7 +180,7 @@ router.post("/", (req, res, next) => {
 
 router.get('/:groupId', (req, res, next) => {
     Group.findById(req.params.groupId)
-        .select('_id name creator members')
+        .select('_id name creator members grouplink')
         .populate('creator members.member')
         .exec()
         .then(group => {
