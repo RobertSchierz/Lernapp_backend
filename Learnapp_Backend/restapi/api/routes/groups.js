@@ -223,6 +223,38 @@ router.delete('/:groupId', (req, res, next) => {
         });
 });
 
+//Funktionen für Grouplink
+router.patch('/grouplink/:grouplink', (req, res, next) => {
+
+    Group.find()
+    .select('_id name creator members grouplink')
+    .exec()
+    .then(docs => {
+        
+        var group = null;
+        for (var i = 0; i < docs.length; i++) {
+            if (req.params.grouplink == docs[i].grouplink) {
+                group = docs[i];
+            }
+        }
+        
+        if(group != null){
+            postMember(req, res, req.body.memberId, group, true);
+        }else{
+            res.status(404).json({
+                message: "Group with given link not found"
+            });
+        }
+
+    }).catch(err => {
+            res.status(500).json({
+                error: err
+            });
+        });
+
+});
+
+
 //Funktionen für Member:
 router.patch('/:groupId', (req, res, next) => {
 
@@ -260,7 +292,6 @@ router.patch('/:groupId', (req, res, next) => {
                                     }
                                 }
                             }).exec().then(result => {
-                                console.log(result);
                                 res.status(200).json({
                                     message: 'Groupmember deleted: ' + searchedMemberId,
                                 });
@@ -284,86 +315,7 @@ router.patch('/:groupId', (req, res, next) => {
 
                 case "postMember":
 
-                    User.findById(req.body.memberId)
-                        .then(user => {
-                            if (!user) {
-                                return res.status(404).json({
-                                    message: 'User not found in the Database'
-                                });
-                            }
-
-                            var checkMemberExists = false;
-                            for (var i = 0; i < group.members.length; i++) {
-                                if (group.members[i].member == searchedMemberId) {
-                                    checkMemberExists = true;
-                                }
-                            }
-
-                            if (!checkMemberExists) {
-
-                                Group.updateOne({
-                                        _id: req.params.groupId
-                                    }, {
-                                        $push: {
-                                            members: {
-                                                "role": "Member",
-                                                "member": searchedMemberId
-                                            }
-                                        }
-                                    }).exec().then(result => {
-
-                                        Group.findById(req.params.groupId)
-                                            .exec()
-                                            .then(group => {
-
-                                                group
-                                                    .populate('creator')
-                                                    .populate('members.member')
-                                                    .execPopulate()
-                                                    .then(function (result) {
-
-                                                        var addeduser = null;
-                                                        for (var i = 0; i < result.members.length; i++) {
-                                                            if (result.members[i].member._id == searchedMemberId) {
-                                                                addeduser = result.members[i];
-                                                            }
-                                                        }
-                                                        if (addeduser != null) {
-                                                            res.status(200).json({
-                                                                message: 'Groupmember added: ' + searchedMemberId,
-                                                                member: addeduser
-
-                                                            });
-                                                        }else{
-                                                            res.status(404).json({
-                                                                error: err,
-                                                                message: "Memberinfos beim hinzufügen Fehler"
-                                                            })
-                                                        }
-                                                    })
-                                            })
-                                    })
-                                    .catch(err => {
-                                        console.log(err);
-                                        res.status(500).json({
-                                            error: err
-                                        })
-                                    });;
-
-                            } else {
-
-                                return res.status(406).json({
-                                    message: "Groupmember allready in Group!: " + searchedMemberId
-                                });
-                            }
-
-                        })
-                        .catch(err => {
-                            console.log(err);
-                            res.status(500).json({
-                                error: err
-                            })
-                        });
+                postMember(req, res, searchedMemberId, group, false);
 
 
                     break;
@@ -392,6 +344,97 @@ router.patch('/:groupId', (req, res, next) => {
 
 });
 
+function postMember(req, res, searchedMemberId, group, linkbool){
+
+    User.findById(req.body.memberId)
+                        .then(user => {
+                            if (!user) {
+                                return res.status(404).json({
+                                    message: 'User not found in the Database'
+                                });
+                            }
+
+                            var checkMemberExists = false;
+                            for (var i = 0; i < group.members.length; i++) {
+                                if (group.members[i].member == searchedMemberId) {
+                                    checkMemberExists = true;
+                                }
+                            }
+
+                            if (!checkMemberExists) {
+
+                                var neededGroupID = null;
+                                if(linkbool == true){
+                                    neededGroupID = group._id;
+                                }else{
+                                    neededGroupID =  req.params.groupId;
+                                }
+
+                                Group.updateOne({
+                                        _id: neededGroupID
+                                    }, {
+                                        $push: {
+                                            members: {
+                                                "role": "Member",
+                                                "member": searchedMemberId
+                                            }
+                                        }
+                                    }).exec().then(result => {
+
+                                        
+                                        Group.findById(neededGroupID)
+                                            .exec()
+                                            .then(group => {
+                                                group
+                                                    .populate('creator')
+                                                    .populate('members.member')
+                                                    .execPopulate()
+                                                    .then(function (result) {
+                                                        var addeduser = null;
+                                                        for (var i = 0; i < result.members.length; i++) {
+                                                            if (result.members[i].member._id == searchedMemberId) {
+                                                                addeduser = result.members[i];
+                                                            }
+                                                        }
+                                                        if (addeduser != null) {
+                                                            res.status(200).json({
+                                                                message: 'Groupmember added: ' + searchedMemberId,
+                                                                member: addeduser
+
+                                                            });
+                                                        }else{
+                                                            res.status(404).json({
+                                                                message: "Memberinfos beim hinzufügen Fehler"
+                                                            })
+                                                        }
+                                                    })
+                                            })
+                                    })
+                                    .catch(err => {
+                                        console.log(err);
+                                        res.status(500).json({
+                                            error: err
+                                        })
+                                    });;
+
+                            } else {
+
+                                /*return res.status(404).json({
+                                    statusText: 'bla'
+                                });*/
+                                res.statusMessage = "allreadyIn"
+                                res.detailMessage = "Du bist bereits in dieser Gruppe";
+                                res.status(400).end();
+                            }
+
+                        })
+                        .catch(err => {
+                            console.log(err);
+                            res.status(500).json({
+                                error: err
+                            })
+                        });
+}
 
 
 module.exports = router;
