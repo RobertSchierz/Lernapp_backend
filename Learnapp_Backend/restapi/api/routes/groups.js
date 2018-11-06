@@ -227,26 +227,26 @@ router.delete('/:groupId', (req, res, next) => {
 router.patch('/grouplink/:grouplink', (req, res, next) => {
 
     Group.find()
-    .select('_id name creator members grouplink')
-    .exec()
-    .then(docs => {
-        
-        var group = null;
-        for (var i = 0; i < docs.length; i++) {
-            if (req.params.grouplink == docs[i].grouplink) {
-                group = docs[i];
-            }
-        }
-        
-        if(group != null){
-            postMember(req, res, req.body.memberId, group, true);
-        }else{
-            res.status(404).json({
-                message: "Group with given link not found"
-            });
-        }
+        .select('_id name creator members grouplink')
+        .exec()
+        .then(docs => {
 
-    }).catch(err => {
+            var group = null;
+            for (var i = 0; i < docs.length; i++) {
+                if (req.params.grouplink == docs[i].grouplink) {
+                    group = docs[i];
+                }
+            }
+
+            if (group != null) {
+                postMember(req, res, req.body.memberId, group, true);
+            } else {
+                res.statusMessage = "linkinvite_groupnotfound"
+                return res.status(404).end();
+
+            }
+
+        }).catch(err => {
             res.status(500).json({
                 error: err
             });
@@ -315,7 +315,7 @@ router.patch('/:groupId', (req, res, next) => {
 
                 case "postMember":
 
-                postMember(req, res, searchedMemberId, group, false);
+                    postMember(req, res, searchedMemberId, group, false);
 
 
                     break;
@@ -330,110 +330,103 @@ router.patch('/:groupId', (req, res, next) => {
                 error: err
             });
         });
-
-
-
-
-
-
-
-
-
-
-
-
 });
 
-function postMember(req, res, searchedMemberId, group, linkbool){
+function postMember(req, res, searchedMemberId, group, linkbool) {
 
     User.findById(req.body.memberId)
-                        .then(user => {
-                            if (!user) {
-                                return res.status(404).json({
-                                    message: 'User not found in the Database'
-                                });
+        .then(user => {
+            if (!user) {
+                if (linkbool) {
+                    res.statusMessage = "linkinvite_usernotfound"
+                    return res.status(404).end();
+                } else {
+                    res.statusMessage = "postuser_usernotfound"
+                    return res.status(404).end();
+                }
+
+            }
+
+            var checkMemberExists = false;
+            for (var i = 0; i < group.members.length; i++) {
+                if (group.members[i].member == searchedMemberId) {
+                    checkMemberExists = true;
+                }
+            }
+
+            if (!checkMemberExists) {
+
+                var neededGroupID = null;
+                if (linkbool == true) {
+                    neededGroupID = group._id;
+                } else {
+                    neededGroupID = req.params.groupId;
+                }
+
+                Group.updateOne({
+                        _id: neededGroupID
+                    }, {
+                        $push: {
+                            members: {
+                                "role": "Member",
+                                "member": searchedMemberId
                             }
+                        }
+                    }).exec().then(result => {
 
-                            var checkMemberExists = false;
-                            for (var i = 0; i < group.members.length; i++) {
-                                if (group.members[i].member == searchedMemberId) {
-                                    checkMemberExists = true;
-                                }
-                            }
 
-                            if (!checkMemberExists) {
-
-                                var neededGroupID = null;
-                                if(linkbool == true){
-                                    neededGroupID = group._id;
-                                }else{
-                                    neededGroupID =  req.params.groupId;
-                                }
-
-                                Group.updateOne({
-                                        _id: neededGroupID
-                                    }, {
-                                        $push: {
-                                            members: {
-                                                "role": "Member",
-                                                "member": searchedMemberId
+                        Group.findById(neededGroupID)
+                            .exec()
+                            .then(group => {
+                                group
+                                    .populate('creator')
+                                    .populate('members.member')
+                                    .execPopulate()
+                                    .then(function (result) {
+                                        var addeduser = null;
+                                        for (var i = 0; i < result.members.length; i++) {
+                                            if (result.members[i].member._id == searchedMemberId) {
+                                                addeduser = result.members[i];
                                             }
                                         }
-                                    }).exec().then(result => {
+                                        if (addeduser != null) {
+                                            res.status(200).json({
+                                                message: 'Groupmember added: ' + searchedMemberId,
+                                                member: addeduser
 
-                                        
-                                        Group.findById(neededGroupID)
-                                            .exec()
-                                            .then(group => {
-                                                group
-                                                    .populate('creator')
-                                                    .populate('members.member')
-                                                    .execPopulate()
-                                                    .then(function (result) {
-                                                        var addeduser = null;
-                                                        for (var i = 0; i < result.members.length; i++) {
-                                                            if (result.members[i].member._id == searchedMemberId) {
-                                                                addeduser = result.members[i];
-                                                            }
-                                                        }
-                                                        if (addeduser != null) {
-                                                            res.status(200).json({
-                                                                message: 'Groupmember added: ' + searchedMemberId,
-                                                                member: addeduser
+                                            });
+                                        } else {
+                                            if (linkbool) {
+                                                res.statusMessage = "linkinvite_posterror"
+                                                return res.status(404).end();
+                                            } else {
+                                                res.statusMessage = "postuser_posterror"
+                                                return res.status(404).end();
+                                            }
 
-                                                            });
-                                                        }else{
-                                                            res.status(404).json({
-                                                                message: "Memberinfos beim hinzufügen Fehler"
-                                                            })
-                                                        }
-                                                    })
-                                            })
+                                        }
                                     })
-                                    .catch(err => {
-                                        console.log(err);
-                                        res.status(500).json({
-                                            error: err
-                                        })
-                                    });;
-
-                            } else {
-
-                                /*return res.status(404).json({
-                                    statusText: 'bla'
-                                });*/
-                                res.statusMessage = "allreadyIn"
-                                res.detailMessage = "Du bist bereits in dieser Gruppe";
-                                res.status(400).end();
-                            }
-
-                        })
-                        .catch(err => {
-                            console.log(err);
-                            res.status(500).json({
-                                error: err
                             })
-                        });
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        res.status(500).json({
+                            error: err
+                        })
+                    });;
+
+            } else {
+                res.statusMessage = "linkinvite_allreadyIn"
+                return res.status(406).end();
+            }
+
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({
+                error: err
+            })
+        });
 }
 
 
