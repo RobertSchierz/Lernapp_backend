@@ -20,7 +20,7 @@ router.get('/usergroups/:userId', (req, res, next) => {
                 }
             }
 
-            if (sortedGroups != null) {
+            if (sortedGroups != null && sortedGroups.length != 0) {
                 res.status(200).json({
                     count: sortedGroups.length,
                     groups: sortedGroups
@@ -28,17 +28,15 @@ router.get('/usergroups/:userId', (req, res, next) => {
 
                 });
             } else {
-                return res.status(404).json({
-                    message: 'User has no groups as creator'
-                });
+                res.statusMessage = "getcreatorgroups_nogroupsfound"
+                return res.status(404).end();
             }
 
 
 
         }).catch(err => {
-            res.status(500).json({
-                error: err
-            });
+            res.statusMessage = "servererror"
+            return res.status(500).end();
         })
 
 
@@ -64,7 +62,7 @@ router.get('/usergroupsall/:userId', (req, res, next) => {
                 }
             }
 
-            if (sortedGroups != null) {
+            if (sortedGroups != null && sortedGroups.length != 0) {
                 res.status(200).json({
                     count: sortedGroups.length,
                     groups: sortedGroups
@@ -72,17 +70,15 @@ router.get('/usergroupsall/:userId', (req, res, next) => {
 
                 });
             } else {
-                return res.status(404).json({
-                    message: 'User has no groups as creator nor member'
-                });
+                res.statusMessage = "getgroups_nogroupsfound"
+                return res.status(404).end();
             }
 
 
 
         }).catch(err => {
-            res.status(500).json({
-                error: err
-            });
+            res.statusMessage = "servererror"
+            return res.status(500).end();
         })
 
 
@@ -115,9 +111,8 @@ router.get('/', (req, res, next) => {
             });
 
         }).catch(err => {
-            res.status(500).json({
-                error: err
-            });
+            res.statusMessage = "servererror"
+            return res.status(500).end();
         })
 });
 
@@ -125,53 +120,47 @@ router.post("/", (req, res, next) => {
     User.findById(req.body.creator)
         .populate('creator members.member')
         .then(user => {
-            if (!user) {
-                return res.status(404).json({
-                    message: 'User not found in the Database'
+
+            if(user == null){
+                res.statusMessage = "creategroup_creatornotfound"
+                return res.status(404).end();
+            }else{
+                const group = new Group({
+                    _id: mongoose.Types.ObjectId(),
+                    creator: req.body.creator,
+                    name: req.body.name,
+                    members: req.body.members
                 });
-            }
-
-
-            const group = new Group({
-                _id: mongoose.Types.ObjectId(),
-                creator: req.body.creator,
-                name: req.body.name,
-                members: req.body.members
-            });
-
-
-            group.save(function (err, group) {
-                group
-                    .populate('creator')
-                    .populate('members.member')
-                    .execPopulate()
-                    .then(function (result) {
-                        console.log(result);
-                        res.status(201).json({
-                            message: 'Group created',
-                            createdGroups: {
-                                _id: result._id,
-                                creator: result.creator,
-                                name: result.name,
-                                members: result.members
-                            },
-                            request: {
-                                type: 'GET',
-                                url: 'http://learnapp.enif.uberspace.de/restapi/groups/' + result._id
-                            }
-                        });
-                    })
-
-
-            });
+    
+                group.save(function (err, group) {
+                    group
+                        .populate('creator')
+                        .populate('members.member')
+                        .execPopulate()
+                        .then(function (result) {
+                            res.status(201).json({
+                                message: 'Group created',
+                                createdGroups: {
+                                    _id: result._id,
+                                    creator: result.creator,
+                                    name: result.name,
+                                    members: result.members
+                                },
+                                request: {
+                                    type: 'GET',
+                                    url: 'http://learnapp.enif.uberspace.de/restapi/groups/' + result._id
+                                }
+                            });
+                        })
+    
+    
+                }); 
+            }    
 
         })
         .catch(err => {
-            console.log(err);
-            res.status(500).json({
-                error: err,
-                message: "Createerror"
-            })
+            res.statusMessage = "servererror"
+            return res.status(500).end();
         });
 
 
@@ -194,9 +183,8 @@ router.get('/:groupId', (req, res, next) => {
             })
         })
         .catch(err => {
-            res.status(500).json({
-                error: err
-            });
+            res.statusMessage = "servererror"
+            return res.status(500).end();
         });
 
 
@@ -206,21 +194,32 @@ router.get('/:groupId', (req, res, next) => {
 
 
 router.delete('/:groupId', (req, res, next) => {
-    Group.remove({
-            _id: req.params.groupId
-        })
-        .exec()
-        .then(result => {
-            res.status(200).json({
-                message: 'Group deleted'
-            });
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({
-                error: err
+
+
+    Group.findById(req.params.groupId).exec().then(group =>{
+        if(group == null){
+            res.statusMessage = "deletegroup_groupnotfound"
+            return res.status(404).end();
+        }else{
+            Group.deleteOne({
+                _id: req.params.groupId
             })
-        });
+            .exec()
+            .then(result => {
+                res.status(200).json({
+                    message: 'Group deleted'
+                });
+            })
+            .catch(err => {
+                res.statusMessage = "servererror"
+                return res.status(500).end();
+            });
+        }
+    });
+   
+
+
+   
 });
 
 //Funktionen für Grouplink
@@ -238,8 +237,16 @@ router.patch('/grouplink/:grouplink', (req, res, next) => {
                 }
             }
 
+           
+
             if (group != null) {
-                postMember(req, res, req.body.memberId, group, true);
+                if(req.body.memberId == group.creator._id){
+                    res.statusMessage = "linkinvite_iscreator"
+                    return res.status(406).end();
+                }else{
+                    postMember(req, res, req.body.memberId, group, true);
+                }
+               
             } else {
                 res.statusMessage = "linkinvite_groupnotfound"
                 return res.status(404).end();
@@ -247,9 +254,8 @@ router.patch('/grouplink/:grouplink', (req, res, next) => {
             }
 
         }).catch(err => {
-            res.status(500).json({
-                error: err
-            });
+            res.statusMessage = "servererror"
+            return res.status(500).end();
         });
 
 });
@@ -297,18 +303,15 @@ router.patch('/:groupId', (req, res, next) => {
                                 });
                             })
                             .catch(err => {
-                                console.log(err);
-                                res.status(500).json({
-                                    error: err
-                                })
+                                res.statusMessage = "servererror"
+                                return res.status(500).end();
                             });;
 
 
 
                     } else {
-                        return res.status(404).json({
-                            message: "Groupmember not found: " + searchedMemberId
-                        });
+                        res.statusMessage = "deletemember_membernotingroup"
+                        return res.status(404).end();
                     }
 
                     break;
@@ -316,8 +319,6 @@ router.patch('/:groupId', (req, res, next) => {
                 case "postMember":
 
                     postMember(req, res, searchedMemberId, group, false);
-
-
                     break;
 
                 default:
@@ -326,9 +327,8 @@ router.patch('/:groupId', (req, res, next) => {
 
         })
         .catch(err => {
-            res.status(500).json({
-                error: err
-            });
+            res.statusMessage = "servererror"
+            return res.status(500).end();
         });
 });
 
@@ -409,10 +409,8 @@ function postMember(req, res, searchedMemberId, group, linkbool) {
                             })
                     })
                     .catch(err => {
-                        console.log(err);
-                        res.status(500).json({
-                            error: err
-                        })
+                        res.statusMessage = "servererror"
+                        return res.status(500).end();
                     });;
 
             } else {
@@ -422,10 +420,8 @@ function postMember(req, res, searchedMemberId, group, linkbool) {
 
         })
         .catch(err => {
-            console.log(err);
-            res.status(500).json({
-                error: err
-            })
+            res.statusMessage = "servererror"
+            return res.status(500).end();
         });
 }
 
