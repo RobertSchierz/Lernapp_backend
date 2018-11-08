@@ -9,10 +9,19 @@ const Category = require('../models/category');
 
 router.get('/:groupId', (req, res, next) => {
     Category.find()
-        .select('_id group name creator')
-        .populate('creator group')
+        .select('_id group name creator ')
+        .populate('creator')
+        .populate({
+            path: 'group',
+            model: 'Group',
+            populate: {
+                path: 'creator',
+                model: 'User'
+            }
+        })  
         .exec()
         .then(docs => {
+
             const sortedCategories = [];
             for (var i = 0; i < docs.length; i++) {
                 if (req.params.groupId == docs[i].group._id) {
