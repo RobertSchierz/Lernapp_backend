@@ -15,10 +15,10 @@ router.get('/:groupId', (req, res, next) => {
             path: 'group',
             model: 'Group',
             populate: {
-                path: 'creator',
+                path: 'creator members.member',
                 model: 'User'
             }
-        })  
+        })
         .exec()
         .then(docs => {
 
@@ -75,35 +75,58 @@ router.post("/", (req, res, next) => {
     User.findById(req.body.creator)
         .populate('creator')
         .then(user => {
-            console.log(user);
-            if(user == null){
+            if (user == null) {
                 res.statusMessage = "createcategory_creatornotfound"
                 return res.status(404).end();
-            }else{
-                const category = new Category({
-                    _id: mongoose.Types.ObjectId(),
-                    group: req.body.group,
-                    name: req.body.name,
-                    creator: req.body.creator
-                });
-    
-                category.save(function (err, category) {
-                    category
-                        .populate('creator')
-                        .execPopulate()
-                        .then(function (result) {
-                            res.status(201).json({
-                                message: 'Category created',
-                                createdCategory: {
-                                    _id: result._id,
-                                    group: result.group,
-                                    name: result.name,
-                                    creator: result.creator
-                                }
+            } else {
+
+
+                Group.findById(req.body.group)
+                    .populate('group')
+                    .then(group => {
+
+                        if (group == null) {
+                            res.statusMessage = "createcategory_groupnotfound"
+                            return res.status(404).end();
+                        } else {
+
+                            const category = new Category({
+                                _id: mongoose.Types.ObjectId(),
+                                group: group,
+                                name: req.body.name,
+                                creator: user
                             });
-                        })
-                }); 
-            }    
+
+                            category.save(function (err, category) {
+                                category
+                                    .populate({
+                                        path: 'group',
+                                        model: 'Group',
+                                        populate: {
+                                            path: 'creator members.member',
+                                            model: 'User'
+                                        }
+                                    })
+                                  
+                                    .execPopulate()
+                                    .then(function (result) {
+                                        res.status(201).json({
+                                            message: 'Category created',
+                                            createdCategory: {
+                                                _id: result._id,
+                                                group: result.group,
+                                                name: result.name,
+                                                creator: result.creator
+                                            }
+                                        });
+                                    })
+                            });
+                        }
+
+                    });
+
+
+            }
 
         })
         .catch(err => {
