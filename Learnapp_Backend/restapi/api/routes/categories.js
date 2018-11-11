@@ -9,16 +9,16 @@ const Category = require('../models/category');
 
 router.get('/:groupId', (req, res, next) => {
     Category.find()
-        .select('_id group name creator ')
+        .select('_id group name creator topics')
         .populate('creator')
         .populate({
-            path: 'group',
-            model: 'Group',
-            populate: {
-                path: 'creator members.member',
-                model: 'User'
-            }
-        })
+                path: 'group',
+                model: 'Group',
+                populate: {
+                    path: 'creator members.member',
+                    model: 'User'
+                }
+            })
         .exec()
         .then(docs => {
 
@@ -45,9 +45,10 @@ router.get('/:groupId', (req, res, next) => {
         })
 });
 
+/*
 router.get('/', (req, res, next) => {
     Category.find()
-        .select('_id group name creator')
+        .select('_id group name creator topics.topic')
         .populate('creator')
         .exec()
         .then(docs => {
@@ -69,6 +70,7 @@ router.get('/', (req, res, next) => {
             return res.status(500).end();
         })
 });
+*/
 
 
 router.post("/", (req, res, next) => {
@@ -94,7 +96,8 @@ router.post("/", (req, res, next) => {
                                 _id: mongoose.Types.ObjectId(),
                                 group: group,
                                 name: req.body.name,
-                                creator: user
+                                creator: user,
+                                topics: req.body.topics
                             });
 
                             category.save(function (err, category) {
@@ -107,7 +110,7 @@ router.post("/", (req, res, next) => {
                                             model: 'User'
                                         }
                                     })
-                                  
+
                                     .execPopulate()
                                     .then(function (result) {
                                         res.status(201).json({
@@ -116,7 +119,8 @@ router.post("/", (req, res, next) => {
                                                 _id: result._id,
                                                 group: result.group,
                                                 name: result.name,
-                                                creator: result.creator
+                                                creator: result.creator,
+                                                topics: result.topics
                                             }
                                         });
                                     })

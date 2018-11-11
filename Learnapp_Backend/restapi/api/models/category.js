@@ -5,13 +5,6 @@ const categorySchema = mongoose.Schema({
     group: {type: mongoose.Schema.Types.ObjectId, ref: 'Group', require: true},
     name: {type: String, required: true},
     creator: {type: mongoose.Schema.Types.ObjectId, ref: 'User', require: true }
-    /*topics: [{
-        state: {type: String, default: "Open"},
-        topic: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Topic'
-        }       
-    }]*/
     
 });
 
