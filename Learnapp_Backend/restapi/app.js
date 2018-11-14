@@ -9,6 +9,7 @@ const userRoutes = require('./api/routes/users');
 const groupRoutes = require('./api/routes/groups');
 const categoryRoutes = require('./api/routes/categories');
 const topicRoutes = require('./api/routes/topics');
+const responseRoutes = require('./api/routes/responses');
 
 
 
@@ -27,6 +28,7 @@ mongoose.connect("mongodb://" + custom_env.env.USERNAME  + ":"+ custom_env.env.P
 
 
 app.use(morgan('dev'));
+app.use('/mediauploads' , express.static('mediauploads'));
 app.use(bodyParser.urlencoded({
     extended: false
 }));
@@ -49,6 +51,7 @@ app.use('/users', userRoutes);
 app.use('/groups', groupRoutes);
 app.use('/categories', categoryRoutes);
 app.use('/topics', topicRoutes);
+app.use('/responses', responseRoutes);
 
 app.use((req, res, next) => {
 

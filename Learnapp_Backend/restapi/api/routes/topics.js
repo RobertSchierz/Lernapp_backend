@@ -12,7 +12,7 @@ const Topic = require('../models/topic');
 
 router.get('/:categoryId', (req, res, next) => {
     Topic.find()
-        .select('_id group name creator')
+        .select('_id group name creator state type')
         .populate('category creator')
         .populate({
             path: 'category',
@@ -79,7 +79,6 @@ router.post("/", (req, res, next) => {
                             const topic = new Topic({
                                 _id: mongoose.Types.ObjectId(),
                                 name: req.body.name,
-                                content: req.body.content,
                                 creator: user,
                                 state: req.body.state,
                                 type: req.body.type,
@@ -93,12 +92,10 @@ router.post("/", (req, res, next) => {
                                     createdTopic: {
                                         _id: topic._id,
                                         name: topic.name,
-                                        content: topic.content,
                                         creator: topic.user,
                                         state: topic.state,
                                         type: topic.type,
-                                        category: topic.category,
-                                        group: topic.group
+                                        category: topic.category
                                     }
                                 });
                             });
