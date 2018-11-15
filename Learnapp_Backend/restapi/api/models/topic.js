@@ -7,6 +7,9 @@ const topicSchema = mongoose.Schema({
     creator: {type: mongoose.Schema.Types.ObjectId, ref: 'User', require: true },
     state: {type: String, default: "Open", required: true},
     type: {type: String, default: "question", required: true},
+    text: {type: String, required: false},
+    mediatype: {type: String, required: false},
+    contenturl: {type: String, required: false},
     category: {type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true},
 });
 

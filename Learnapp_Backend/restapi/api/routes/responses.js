@@ -29,9 +29,9 @@ const upload = multer({
 
 router.get('/', (req, res, next) => {
     Response.find()
-        .select('_id topic creator mediatype contenturl')
+        .select('_id topic creator text mediatype contenturl')
         .populate('topic creator')
-        .populate({
+        .populate([{
             path: 'topic',
             model: 'Topic',
             populate: {
@@ -39,7 +39,34 @@ router.get('/', (req, res, next) => {
                 model: 'User'
             }
 
-        })
+        },
+        {
+            path: 'topic',
+            model: 'Topic',
+            populate: [{
+                path: 'category',
+                model: 'Category',
+                populate: {
+                    path: 'group',
+                    model: 'Group',
+                    populate: {
+                        path: 'creator members.member',
+                    model: 'User',
+                    }
+                }
+            },{
+                path: 'category',
+                model: 'Category',
+                populate: {
+                path: 'creator',
+                model: 'User'
+                }
+            }
+        ]
+
+        }
+    
+    ])
         .exec()
         .then(docs => {
 
@@ -64,7 +91,7 @@ router.get('/', (req, res, next) => {
         })
 });
 
-router.post("/", upload.single('content'), (req, res, next) => {
+router.post("/", upload.single('contenturl'), (req, res, next) => {
 
     User.findById(req.body.creator)
         .populate('creator')
@@ -87,6 +114,7 @@ router.post("/", upload.single('content'), (req, res, next) => {
                                 _id: mongoose.Types.ObjectId(),
                                 topic: topic,
                                 creator: user,
+                                text: req.body.text,
                                 mediatype: req.body.mediatype,
                                 contenturl: req.file.path
                             });
@@ -98,6 +126,7 @@ router.post("/", upload.single('content'), (req, res, next) => {
                                         _id: response._id,
                                         topic: response.topic,
                                         creator: response.creator,
+                                        text: response.text,
                                         mediatype: response.mediatype,
                                         contenturl: response.contenturl
                                     }

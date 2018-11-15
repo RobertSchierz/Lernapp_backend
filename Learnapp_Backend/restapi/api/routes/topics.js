@@ -7,12 +7,28 @@ const User = require('../models/user');
 const Category = require('../models/category');
 const Topic = require('../models/topic');
 
+const multer = require('multer');
+const storage = multer.diskStorage({
 
+    destination: function (req, file, callback) {
+        callback(null, './mediauploads/');
+    },
+    filename: function (req, file, callback) {
+        callback(null, new Date().toISOString() + "_" + file.originalname);
+    }
+
+});
+const upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: 1024 * 1024 * 50
+    }
+});
 
 
 router.get('/:categoryId', (req, res, next) => {
     Topic.find()
-        .select('_id group name creator state type')
+        .select('_id group name creator state type text mediatype contenturl')
         .populate('category creator')
         .populate({
             path: 'category',
@@ -58,7 +74,7 @@ router.get('/:categoryId', (req, res, next) => {
 });
 
 
-router.post("/", (req, res, next) => {
+router.post("/", upload.single('contenturl'), (req, res, next) => {
     User.findById(req.body.creator)
         .populate('creator category')
         .then(user => {
@@ -82,6 +98,9 @@ router.post("/", (req, res, next) => {
                                 creator: user,
                                 state: req.body.state,
                                 type: req.body.type,
+                                text: req.body.text,
+                                mediatype: req.body.mediatype,
+                                contenturl: req.file.path,
                                 category: category
 
                             });
@@ -95,6 +114,9 @@ router.post("/", (req, res, next) => {
                                         creator: topic.user,
                                         state: topic.state,
                                         type: topic.type,
+                                        text: topic.text,
+                                        mediatype: topic.mediatype,
+                                        contenturl: topic.contenturl,
                                         category: topic.category
                                     }
                                 });
