@@ -14,7 +14,8 @@ const storage = multer.diskStorage({
         callback(null, './mediauploads/');
     },
     filename: function (req, file, callback) {
-        callback(null, new Date().toISOString() + "_" + file.originalname);
+        var modifiedName = file.originalname.replace(/;/g, "");
+        callback(null, Math.random().toString(36).substr(2, 16) + "_" + modifiedName);
     }
 
 });
