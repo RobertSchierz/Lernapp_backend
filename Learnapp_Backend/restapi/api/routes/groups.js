@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 
 const Group = require('../models/group');
 const User = require('../models/user');
-
+ 
 
 // Get all Groups where usere is creator
 router.get('/usergroups/:userId', (req, res, next) => {

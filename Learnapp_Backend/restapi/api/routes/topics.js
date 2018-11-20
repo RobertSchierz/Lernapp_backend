@@ -92,6 +92,12 @@ router.post("/", upload.single('contenturl'), (req, res, next) => {
                             return res.status(404).end();
                         } else {
 
+                            var filepath;
+                            if(req.body.mediatype == "text"){
+                                filepath = "";
+                            }else{
+                                filepath = req.file.path;
+                            }
 
                             const topic = new Topic({
                                 _id: mongoose.Types.ObjectId(),
@@ -101,7 +107,7 @@ router.post("/", upload.single('contenturl'), (req, res, next) => {
                                 type: req.body.type,
                                 text: req.body.text,
                                 mediatype: req.body.mediatype,
-                                contenturl: req.file.path,
+                                contenturl: filepath,
                                 category: category
 
                             });
