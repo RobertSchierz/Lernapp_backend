@@ -15,7 +15,8 @@ const storage = multer.diskStorage({
         callback(null, './mediauploads/');
     },
     filename: function (req, file, callback) {
-        callback(null, new Date().toISOString() + "_" + file.originalname);
+        var modifiedName = file.originalname.replace(/;/g, "");
+        callback(null, Math.random().toString(36).substr(2, 16) + "_" + modifiedName);
     }
 
 });
@@ -110,13 +111,20 @@ router.post("/", upload.single('contenturl'), (req, res, next) => {
                         } else {
 
 
+                            var filepath;
+                            if(req.body.mediatype == "text"){
+                                filepath = "";
+                            }else{
+                                filepath = req.file.path;
+                            }
+
                             const response = new Response({
                                 _id: mongoose.Types.ObjectId(),
                                 topic: topic,
                                 creator: user,
                                 text: req.body.text,
                                 mediatype: req.body.mediatype,
-                                contenturl: req.file.path
+                                contenturl: filepath
                             });
 
                             response.save(function (err, response) {

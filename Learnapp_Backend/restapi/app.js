@@ -14,6 +14,7 @@ const responseRoutes = require('./api/routes/responses');
 
 
 
+
 //mongoose.connect('mongodb://learnapp_mongoadmin:Xahy4ozuje@localhost:31484/users?authSource=users', {useNewUrlParser: true})
 
 mongoose.connect("mongodb://" + custom_env.env.USERNAME  + ":"+ custom_env.env.PASSWORD +"@localhost:"+ custom_env.env.PORT +"/"+ custom_env.env.DB +"", {
@@ -24,7 +25,6 @@ mongoose.connect("mongodb://" + custom_env.env.USERNAME  + ":"+ custom_env.env.P
 
 
 });
-
 
 
 app.use(morgan('dev'));

@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 
 const Group = require('../models/group');
 const User = require('../models/user');
+
  
 
 // Get all Groups where usere is creator
@@ -21,11 +22,10 @@ router.get('/usergroups/:userId', (req, res, next) => {
             }
 
             if (sortedGroups != null && sortedGroups.length != 0) {
+
                 res.status(200).json({
                     count: sortedGroups.length,
                     groups: sortedGroups
-
-
                 });
             } else {
                 res.statusMessage = "getcreatorgroups_nogroupsfound"
@@ -63,6 +63,7 @@ router.get('/usergroupsall/:userId', (req, res, next) => {
             }
 
             if (sortedGroups != null && sortedGroups.length != 0) {
+
                 res.status(200).json({
                     count: sortedGroups.length,
                     groups: sortedGroups
@@ -144,7 +145,8 @@ router.post("/", (req, res, next) => {
                                     _id: result._id,
                                     creator: result.creator,
                                     name: result.name,
-                                    members: result.members
+                                    members: result.members,
+                                    grouplink: result.grouplink
                                 },
                                 request: {
                                     type: 'GET',
@@ -265,6 +267,10 @@ router.patch('/grouplink/:grouplink', (req, res, next) => {
 router.patch('/:groupId', (req, res, next) => {
 
     Group.findById(req.params.groupId)
+        .populate({
+            path: 'members members.member',
+            model: 'User' 
+        })
         .exec()
         .then(group => {
             if (!group) {
@@ -280,9 +286,11 @@ router.patch('/:groupId', (req, res, next) => {
                 case "deleteMember":
 
                     var checkMemberExists = false;
+                    var groupmember;
                     for (var i = 0; i < group.members.length; i++) {
-                        if (group.members[i].member == searchedMemberId) {
+                        if (group.members[i].member._id == searchedMemberId) {
                             checkMemberExists = true;
+                            groupmember = group.members[i];
                         }
                     }
 
@@ -300,6 +308,8 @@ router.patch('/:groupId', (req, res, next) => {
                             }).exec().then(result => {
                                 res.status(200).json({
                                     message: 'Groupmember deleted: ' + searchedMemberId,
+                                    member: groupmember,
+                                    group: group._id
                                 });
                             })
                             .catch(err => {

@@ -7,6 +7,8 @@ const User = require('../models/user');
 const Category = require('../models/category');
 
 
+
+
 router.get('/:groupId', (req, res, next) => {
     Category.find()
         .select('_id group name creator topics')
