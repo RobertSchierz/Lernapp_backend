@@ -50,13 +50,11 @@ app.get('/', (req, res) => {
 
         socket.on('TopicAdded', function(json) {
             var data = JSON.parse(json);
-            console.log(data);
             socket.broadcast.emit('topicAdded', data)
         });
 
         socket.on('ResponseAdded', function(json) {
             var data = JSON.parse(json);
-            console.log(data);
             socket.broadcast.emit('responseAdded', data)
         });
 

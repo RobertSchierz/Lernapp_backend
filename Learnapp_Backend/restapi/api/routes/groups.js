@@ -4,6 +4,14 @@ const mongoose = require('mongoose');
 
 const Group = require('../models/group');
 const User = require('../models/user');
+const Category = require('../models/category');
+const Topic = require('../models/topic');
+const Response = require('../models/response');
+
+
+	
+const fs = require('fs');
+const path = require("path");
 
  
 
@@ -197,12 +205,14 @@ router.get('/:groupId', (req, res, next) => {
 
 router.delete('/:groupId', (req, res, next) => {
 
-
+   
     Group.findById(req.params.groupId).exec().then(group =>{
         if(group == null){
             res.statusMessage = "deletegroup_groupnotfound"
             return res.status(404).end();
         }else{
+
+            deleteConnections(req);
             Group.deleteOne({
                 _id: req.params.groupId
             })
@@ -211,18 +221,80 @@ router.delete('/:groupId', (req, res, next) => {
                 res.status(200).json({
                     message: 'Group deleted'
                 });
+
+               
             })
             .catch(err => {
                 res.statusMessage = "servererror"
                 return res.status(500).end();
             });
+            
         }
     });
-   
-
-
-   
+    
 });
+
+
+function deleteConnections(req){
+
+    var queryCategory = {group: req.params.groupId};
+
+    Category.find(queryCategory,function(err, result){
+  
+        result.forEach(element => {
+            var queryTopic = {category: element._id};
+            Topic.find(queryTopic, function(err, result){
+                
+                result.forEach(element => {
+                    var queryResponse = {topic: element._id};
+                    deleteFile(element);
+                   
+                    Response.find(queryResponse, function(err, result){
+                        result.forEach(element => {
+                            deleteFile(element);
+                        });
+                    });
+
+                 
+                    Response.deleteOne(queryResponse, function(err, obj){
+                        if(err) throw err;
+                    });
+                });
+
+                Topic.deleteOne(queryTopic, function(err, obj){
+                    if(err) throw err;
+                });
+
+            });
+        
+            Category.deleteOne(queryCategory, function(err, obj){
+                if(err) throw err;
+           
+            });
+
+        });
+    });
+
+
+}
+
+function deleteFile(element){
+    if(element.contenturl !== "" && element.contenturl !== null){
+ 
+        const filepath = path.resolve(__dirname, "../../" + element.contenturl);
+        fs.access(filepath, error => {
+            if (!error) {
+                fs.unlink(filepath,function(error){
+                    if(error){
+                        console.log(error);
+                    }
+                });
+            } else {
+                console.log(error);
+            }
+        });
+    }
+}
 
 //Funktionen für Grouplink
 router.patch('/grouplink/:grouplink', (req, res, next) => {
