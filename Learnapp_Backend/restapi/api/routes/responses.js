@@ -33,47 +33,46 @@ router.get('/', (req, res, next) => {
         .select('_id topic creator text mediatype contenturl')
         .populate('topic creator')
         .populate([{
-            path: 'topic',
-            model: 'Topic',
-            populate: {
-                path: 'creator',
-                model: 'User'
-            }
-
-        },
-        {
-            path: 'topic',
-            model: 'Topic',
-            populate: [{
-                path: 'category',
-                model: 'Category',
+                path: 'topic',
+                model: 'Topic',
                 populate: {
-                    path: 'group',
-                    model: 'Group',
+                    path: 'creator',
+                    model: 'User'
+                }
+
+            },
+            {
+                path: 'topic',
+                model: 'Topic',
+                populate: [{
+                    path: 'category',
+                    model: 'Category',
                     populate: {
-                        path: 'creator members.member',
-                    model: 'User',
+                        path: 'group',
+                        model: 'Group',
+                        populate: {
+                            path: 'creator members.member',
+                            model: 'User',
+                        }
                     }
-                }
-            },{
-                path: 'category',
-                model: 'Category',
-                populate: {
-                path: 'creator',
-                model: 'User'
-                }
-            }
-        ]
+                }, {
+                    path: 'category',
+                    model: 'Category',
+                    populate: {
+                        path: 'creator',
+                        model: 'User'
+                    }
+                }]
 
-        }
-    
-    ])
+            }
+
+        ])
         .exec()
         .then(docs => {
 
             const sortedResponses = [];
             for (var i = 0; i < docs.length; i++) {
-                    sortedResponses.push(docs[i]);     
+                sortedResponses.push(docs[i]);
             }
 
             if (sortedResponses != null && sortedResponses.length != 0) {
@@ -95,14 +94,38 @@ router.get('/', (req, res, next) => {
 router.post("/", upload.single('contenturl'), (req, res, next) => {
 
     User.findById(req.body.creator)
-        .populate('creator')
+        .populate('creator topic')
         .then(user => {
             if (user == null) {
                 res.statusMessage = "createresponse_creatornotfound"
                 return res.status(404).end();
             } else {
                 Topic.findById(req.body.topic)
-                    .populate('topic')
+                    .populate([{
+
+                            path: 'category',
+                            model: 'Category',
+                            populate: {
+                                path: 'group',
+                                model: 'Group',
+                                populate: {
+                                    path: 'creator members.member',
+                                    model: 'User'
+                                }
+                            }
+                        },{
+                            path: 'category',
+                            model: 'Category',
+                            populate: {
+                                path: 'creator',
+                                model: 'User',
+                            }  
+                        },
+                        {
+                            path: 'creator',
+                            model: 'User'
+                        }
+                    ])
                     .then(topic => {
 
                         if (topic == null) {
@@ -112,9 +135,9 @@ router.post("/", upload.single('contenturl'), (req, res, next) => {
 
 
                             var filepath;
-                            if(req.body.mediatype == "text"){
+                            if (req.body.mediatype == "text") {
                                 filepath = "";
-                            }else{
+                            } else {
                                 filepath = req.file.path;
                             }
 

@@ -402,7 +402,8 @@ function postMember(req, res, searchedMemberId, group, linkbool) {
                                         if (addeduser != null) {
                                             res.status(200).json({
                                                 message: 'Groupmember added: ' + searchedMemberId,
-                                                member: addeduser
+                                                member: addeduser,
+                                                group: group._id
 
                                             });
                                         } else {

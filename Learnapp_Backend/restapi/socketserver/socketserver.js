@@ -12,7 +12,7 @@ app.get('/', (req, res) => {
 
 
 
-server.listen(61042);
+
 
     
     io.on('connection', function(socket) {
@@ -35,17 +35,37 @@ server.listen(61042);
 
         socket.on('GroupMemberDeleted', function(json) {
             var data = JSON.parse(json);
-            console.log(data);
             socket.broadcast.emit('groupMemberDeleted', data)
         });
-    
-    
-    
-    
-      
+
+        socket.on('GroupMemberAdded', function(json) {
+            var data = JSON.parse(json);
+            socket.broadcast.emit('groupMemberAdded', data)
+        });
+
+        socket.on('CategoryAdded', function(json) {
+            var data = JSON.parse(json);
+            socket.broadcast.emit('categoryAdded', data)
+        });
+
+        socket.on('TopicAdded', function(json) {
+            var data = JSON.parse(json);
+            console.log(data);
+            socket.broadcast.emit('topicAdded', data)
+        });
+
+        socket.on('ResponseAdded', function(json) {
+            var data = JSON.parse(json);
+            console.log(data);
+            socket.broadcast.emit('responseAdded', data)
+        });
+
+
+
+
     });
 
-
+    server.listen(61042);
 
 module.exports = io;
 

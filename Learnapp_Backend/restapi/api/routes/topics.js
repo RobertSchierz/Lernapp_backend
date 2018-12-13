@@ -84,7 +84,20 @@ router.post("/", upload.single('contenturl'), (req, res, next) => {
                 return res.status(404).end();
             } else {
                 Category.findById(req.body.category)
-                    .populate('category')
+                    .populate([{
+
+                            path: 'group',
+                            model: 'Group',
+                            populate: {
+                                path: 'members.member creator',
+                                model: 'User'
+                            }
+                        },
+                        {
+                            path: 'creator',
+                            model: 'User'
+                        }
+                    ])
                     .then(category => {
 
                         if (category == null) {
@@ -93,9 +106,9 @@ router.post("/", upload.single('contenturl'), (req, res, next) => {
                         } else {
 
                             var filepath;
-                            if(req.body.mediatype == "text"){
+                            if (req.body.mediatype == "text") {
                                 filepath = "";
-                            }else{
+                            } else {
                                 filepath = req.file.path;
                             }
 
@@ -118,7 +131,7 @@ router.post("/", upload.single('contenturl'), (req, res, next) => {
                                     createdTopic: {
                                         _id: topic._id,
                                         name: topic.name,
-                                        creator: topic.user,
+                                        creator: topic.creator,
                                         state: topic.state,
                                         type: topic.type,
                                         text: topic.text,
